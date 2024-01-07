@@ -64,6 +64,10 @@ internal class Program
 
         using (var scope = app.Services.CreateScope())
         {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            dbContext.Database.Migrate();
+
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var roles = new[] { "Admin", "Manager", "Member", "User" };
 
@@ -94,14 +98,9 @@ internal class Program
 
                 await userManager.AddToRoleAsync(user, "Admin");
             }
-
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-            dbContext.Database.Migrate();
         }
 
         
-       
 
         app.Run();
     }
