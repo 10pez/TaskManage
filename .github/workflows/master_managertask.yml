@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'ManagerTask'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5BE9C35899FB4B4C9D2F763032BBD3D9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A61B41616AF04817A116200E33779C4A }}
           package: .
