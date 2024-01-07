@@ -1,0 +1,33 @@
+﻿@model IEnumerable<TaskManage.Models.Group>
+
+@{
+    ViewData["Title"] = "Zespoły";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="text-center" style="margin: 0;">Lista zespołów</h1>
+        @if(User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary" asp-action="Create">Dodaj zespół</a>
+        }
+</div>
+
+
+<div class="row justify-content-center">
+    @foreach (var item in Model)
+    {
+        <div class="card m-4 rounded-pill" style="width: 18rem; background-color: #007BFF;">
+            <div class="card-body">
+                <div class="badge badge-primary mb-3 text-white text-center" style="width: 100%;">
+                    <p>Grupa:</p>
+                    <p style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">@item.Name</p>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Group_" + item.Name))
+                    {
+                        <a class="btn btn-danger" style=" font-size: 14px;" asp-action="Details" asp-route-id="@item.Id">Przejdź do grupy</a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

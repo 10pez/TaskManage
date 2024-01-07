@@ -1,0 +1,109 @@
+﻿@model TaskManage.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="d-flex justify-content-between">
+    <h1>Szczegóły zadania @Model.Name</h1>
+    <a class="btn btn-outline-success" asp-controller="Group" asp-action="Details" asp-route-id="@Model.GroupId">Wróć do grupy</a>
+</div>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.DueDate)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.DueDate)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.CreatedAt)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.Priority)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.Priority)
+                </dd>
+                <dt class = "col-sm-2">
+                    @Html.DisplayNameFor(model => model.IsDone)
+                </dt>
+                <dd class = "col-sm-10">
+                    @Html.DisplayFor(model => model.IsDone)
+                </dd>
+            </dl>
+        </div>
+
+
+        <div class="col-md-6">
+            <h3>Komentarze</h3>
+            <ul>
+                @foreach (var comment in Model.Comments)
+                {
+                <li style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; width: 100%;">
+                    <div class="row">
+                        <div class="col-md-6" style="font-weight: bold;">
+                            Autor: @comment.UserName
+                        </div>
+                        <div class="col-md-6 text-md-end" style="color: #888;">
+                            Data dodania: @comment.CreatedAt
+                        </div>
+                    </div>
+                    <div style="margin-top: 5px; min-height: 150px;" class="collapse" id="commentCollapse-@comment.Id">
+                        Treść:<br> @comment.Content
+                    </div>
+
+                    <div>Treść:</div>
+                    <div class="row m-1" style="width: 80%;">
+                        <div style="max-width: 100%; min-height: 50; border: 1px solid #ccc; padding: 5px; overflow: auto; word-wrap: break-word;">
+                            @Html.Raw(comment.Content)
+                        </div>
+                    </div>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager") || comment.UserId == User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
+                    {
+                        <div class="d-flex justify-content-end">
+                            <form asp-controller="Comments" asp-action="Delete" method="post">
+                                <input type="hidden" name="Id" value="@comment.Id" />
+                                <input type="submit" value="Delete" class="btn btn-outline-danger small-btn" />
+                            </form>
+                        </div>
+                    }
+                </li>
+            }
+        </ul>
+
+        <form method="post" asp-action="AddComment">
+            <div style="padding-left: 30px;">
+                <input type="hidden" name="taskId" value="@Model.Id" />
+                <label for="commentText">Dodaj komentarz:</label><br />
+                <div class="m-1" style="display: flex; align-items: center;">
+                    <textarea style="width: 80%; height: 100px; margin-right: 10px;" name="commentText" required placeholder="Treść komentarza..."></textarea>
+                    <button class="btn btn-primary" type="submit">Dodaj</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+     
+</div>
+</div>

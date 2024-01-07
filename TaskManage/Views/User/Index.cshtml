@@ -1,0 +1,104 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<ApplicationUser>
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Grupa</th>
+            <th>Zmień grupę</th>
+            @if (User.IsInRole("Admin"))
+            {
+            <th>Dodaj rolę</th>
+            <th>Usuń rolę</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+                <td>
+                    @foreach (var role in (ViewData["UserRoles"] as Dictionary<string, IList<string>>)[user.Id])
+                    {
+                        <span>@role</span>
+
+                        <br />
+                    }
+                </td>
+                <td>
+                    @foreach (var group in (ViewData["Groups"] as List<Group>).Where(g => g.Id == user.GroupId))
+                    {
+                        <span>@group.Name</span>
+
+                        <br />
+                    }
+                </td>
+                <td>
+                    <form asp-action="SetGroup" asp-controller="User" method="post" class="m-1">
+                        <input type="hidden" name="UserId" value="@user.Id" />
+
+                        <div class="form-group">
+                            <label class="mb-1" for="GroupId">Wybierz grupę:</label>
+                            <select class="form-control form-control-sm mb-1" name="GroupId">
+                                @foreach (var group in ViewData["Groups"] as List<Group>)
+                                {
+                                    <option value="@group.Id">@group.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-sm">Zmień grupę</button>
+                    </form>
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <form asp-action="SetRole" asp-controller="User" method="post" class="m-1">
+                            <input type="hidden" name="UserId" value="@user.Id" />
+
+                            <div class="form-group">
+                                <label class="mb-1" for="RoleName">Wybierz rolę:</label>
+                                <select class="mb-2 form-control form-control-sm" name="RoleName">
+                                    @foreach (var role in ViewData["Roles"] as List<IdentityRole>)
+                                    {
+                                        if (!role.Name.StartsWith("Group_"))
+                                        {
+                                            <option value="@role.Name">@role.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-sm">Dodaj rolę</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="RemoveRole" asp-controller="User" method="post" class="m-1">
+                            <input type="hidden" name="UserId" value="@user.Id" />
+
+                            <div class="form-group">
+                                <label class="mb-1" for="RoleName">Wybierz rolę:</label>
+                                <select class="mb-2 form-control form-control-sm" name="RoleName">
+                                    @foreach (var role in ViewData["Roles"] as List<IdentityRole>)
+                                    {
+                                        if (!role.Name.StartsWith("Group_"))
+                                        {
+                                            <option value="@role.Name">@role.Name</option>
+                                        }
+                                    }
+                                </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger btn-sm">Usuń rolę</button>
+                    </form>
+                </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,48 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+/* Stylowanie dla zadania zakoñczonego */
+.done {
+    color: green; /* Kolor tekstu dla zakoñczonych zadañ */
+    font-weight: bold; /* Pogrubienie tekstu dla zakoñczonych zadañ */
+}
+
+/* Stylowanie dla zadania niezakoñczonego */
+.not-done {
+    color: red; /* Kolor tekstu dla niezakoñczonych zadañ */
+    font-style: italic; /* Kursywa dla niezakoñczonych zadañ */
+}
+
+/* Dodatkowy styl dla kolorowania sk³adni kodu z Prism.js */
+/* Mo¿esz dostosowaæ te style do swoich preferencji */
+pre {
+    margin: 0;
+    padding: 1em;
+    overflow: auto;
+}
+
+code {
+    display: inline;
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    color: #c7254e;
+    background-color: #f9f2f4;
+    border-radius: 0.2em;
+}

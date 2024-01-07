@@ -1,0 +1,53 @@
+﻿@model TaskManage.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 style="text-align: center;">Edycja zadania @Model.Name</h1>
+
+<hr />
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group mb-2">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+   
+                    <label asp-for="DueDate" class="control-label"></label>
+                    <input asp-for="DueDate" class="form-control" />
+                    <span asp-validation-for="DueDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <label asp-for="Priority" class="control-label"></label>
+                    <select asp-for="Priority" asp-items="Html.GetEnumSelectList<PriorityEnum>()" class="form-control">
+                        <option value="">Wybierz priorytet</option>
+                    </select>
+                    <span asp-validation-for="Priority" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-2">
+                    <input type="submit" value="Zapisz" class="btn btn-outline-primary" />
+                    <a class="btn btn-outline-danger" asp-controller="Group" asp-action="Details" asp-route-id="@Model.GroupId">Wróć do grupy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

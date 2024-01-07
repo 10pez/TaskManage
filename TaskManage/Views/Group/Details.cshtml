@@ -1,0 +1,82 @@
+﻿@model TaskManage.Models.Group
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1 class="text-center">@Html.DisplayFor(model => model.Name)</h1>
+
+
+<div>
+    <div>
+        <h1>Lista zadań</h1>
+        <div>
+            @Html.DisplayFor(model => model.Description)
+        </div>
+
+        <a asp-controller="TaskItem" asp-action="Create" asp-route-groupId="@Model.Id" class="btn btn-outline-primary btn-sm" style="float: right;">Dodaj zadanie</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>LP.</th>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Termin</th>
+                <th>Czy zakończono?</th>
+                <th>Priorytet</th>
+                <th style="text-align: center;">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var (index, task) in Model.Tasks.Select((task, index) => (index, task)))
+            {
+                <tr>
+                    <td>@(index + 1)</td>
+                    <td>@task.Name</td>
+                    <td>@task.Description</td>
+                    <td>@task.DueDate.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (task.IsDone == true)
+                        {
+                            <p class="done">Tak</p>
+                        }
+                        else
+                        {
+                            <p class="not-done">Nie</p>
+                        }
+                    </td>
+                    <td>@task.Priority</td>
+                    <td>
+                        <a asp-controller="TaskItem" asp-action="Edit" asp-route-groupId="@Model.Id" asp-route-id="@task.Id" class="btn btn-outline-primary btn-sm">Edytuj</a>
+                        <a asp-controller="TaskItem" asp-action="Details" asp-route-groupId="@Model.Id" asp-route-id="@task.Id" class="btn btn-outline-success btn-sm">Szczegóły</a>
+                        <a asp-controller="TaskItem" asp-action="Delete" asp-route-groupId="@Model.Id" asp-route-id="@task.Id" class="btn btn-outline-danger btn-sm">Usuń</a>
+                        <a asp-controller="TaskItem" asp-action="CheckAsComplete" asp-route-groupId="@Model.Id" asp-route-id="@task.Id" class="btn btn-outline-info btn-sm">Oznacz jako zakończone</a>
+                        <a asp-controller="TaskItem" asp-action="CheckAsUncompleted" asp-route-groupId="@Model.Id" asp-route-id="@task.Id" class="btn btn-outline-danger btn-sm">Oznacz jakoniezakończone</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <h2>Użytkownicy</h2>
+
+    @if (Model.Users.Any())
+    {
+        <ul>
+            @foreach (var user in Model.Users)
+            {
+                <li>@user.Email</li>
+
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Brak użytkowników w grupie.</p>
+    }
+</div>
+<div>
+    <a class="btn btn-outline-danger btn-sm" asp-action="Index">Przejdź do stroby głównej</a>
+</div>
