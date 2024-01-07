@@ -94,7 +94,14 @@ internal class Program
 
                 await userManager.AddToRoleAsync(user, "Admin");
             }
+
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            dbContext.Database.Migrate();
         }
+
+        
+       
 
         app.Run();
     }
