@@ -14,6 +14,7 @@
             {
             <th>Dodaj rolę</th>
             <th>Usuń rolę</th>
+            <th>Usuń użutkownika</th>
             }
         </tr>
     </thead>
@@ -97,6 +98,15 @@
                         <button type="submit" class="btn btn-danger btn-sm">Usuń rolę</button>
                     </form>
                 </td>
+                    <td class="text-center">
+                        <form asp-action="Delete" asp-controller="User" asp-route-id="@user.Id" method="post" class="m-1 d-flex flex-column align-items-center">
+                            <input type="hidden" name="id" value="@user.Id" />
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Usuń użytkownika</button>
+                            </div>
+                        </form>
+                    </td>
                 }
             </tr>
         }

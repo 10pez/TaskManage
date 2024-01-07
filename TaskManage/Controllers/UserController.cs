@@ -129,4 +129,41 @@ public class UserController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpGet]
+    [Route("User/Delete/{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        return View(user);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Route("User/Delete/{id}")]
+    public async Task<IActionResult> DeleteConfirmed(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        await _userManager.DeleteAsync(user);
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction("Index");
+    }
 }
